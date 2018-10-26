@@ -1,1 +1,1 @@
-# Just a practice as a Python starter.
+# Just a practice as a beginner of Python.
