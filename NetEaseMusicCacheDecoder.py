@@ -79,13 +79,13 @@ class Converter:
 			print("Decode Failed")
 			return False
 		
-		if self.bytes_writer.writeBytes(destination_path, write_byte_array):
-			print("Complete!")
-			return True
-		else:
+		if not self.bytes_writer.writeBytes(destination_path, write_byte_array):
 			print("Write file: ", destination_path, " Failed")
 			return False
-
+		else:
+			print("Complete!")
+			return True
+		
 #
 
 class PathParser:
@@ -115,9 +115,9 @@ else:
 		
 		converter.bytes_reader = BytesReader()
 		converter.bytes_writer = BytesWriter()
-		
+			
 		converter.bytes_decoder = XOrA3Decoder()
-		
+			
 		converter.convert(sys.argv[1], path_parser.path_without_extension + ".mp3")
-
+		
 os.system("pause")
