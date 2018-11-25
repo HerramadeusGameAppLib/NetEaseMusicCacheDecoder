@@ -20,14 +20,14 @@ class KeywordSongChecker(UrlChecker):
 
 #-------------------------------------------------------------
 
-class NetEaseCloudMusicLinkChecker(UrlChecker):
+class NeteaseCloudMusicLinkChecker(UrlChecker):
     
     def IsValidUrl(self, url, error_message):
 
         if url.find("music.163.com") >= 0 :
             return True
 
-        error_message = "not a net ease music link"
+        error_message = "not a Netease music link"
         return False
 
 #-------------------------------------------------------------
@@ -119,7 +119,7 @@ class DownloadPerformer:
 
     def __init__(self, *args, **kwargs):
         self.music_id_getter = MusicIDGetter()
-        self.music_id_getter.url_checkers = [KeywordSongChecker(), NetEaseCloudMusicLinkChecker()]
+        self.music_id_getter.url_checkers = [KeywordSongChecker(), NeteaseCloudMusicLinkChecker()]
 
         self.outlink_url_getter = OutLinkUrlGetter()
         self.actual_url_getter = ActualUrlGetter()
