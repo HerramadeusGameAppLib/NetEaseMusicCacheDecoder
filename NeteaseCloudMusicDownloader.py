@@ -20,14 +20,14 @@ class KeywordSongChecker(UrlChecker):
 
 #-------------------------------------------------------------
 
-class NeteaseCloudMusicLinkChecker(UrlChecker):
+class NetEaseMusicLinkChecker(UrlChecker):
     
     def IsValidUrl(self, url, error_message):
 
         if url.find("music.163.com") >= 0 :
             return True
 
-        error_message = "not a Netease music link"
+        error_message = "not a net ease music link"
         return False
 
 #-------------------------------------------------------------
@@ -94,18 +94,36 @@ class ActualUrlGetter:
         
 #-------------------------------------------------------------
 
+class MusicDataWriter:
+    
+    def Write(self, path_to_write, data):
+        return NotImplemented
+
+#-------------------------------------------------------------
+
+class SimpleMusicDataWriter(MusicDataWriter):
+
+    def Write(self, path_to_write, data):
+        with open(path_to_write, "wb") as write_file:
+            write_file.write(data)
+
+#-------------------------------------------------------------
+
 class Downloader:
     def Download(self, url, path_to_write):
         return NotImplemented
 
 class HttpDownloader(Downloader):
 
-    def Download(self, url_to_download, path_to_write):
+    music_data_writer = None
 
+    def __init__(self, *args, **kwargs):
+        self.music_data_writer = SimpleMusicDataWriter()
+        return super().__init__(*args, **kwargs)
+
+    def Download(self, url_to_download, path_to_write):
         data = urllib.request.urlopen(url_to_download).read()
-        
-        with open(path_to_write, "wb") as write_file:
-            write_file.write(data)
+        self.music_data_writer.Write(path_to_write, data)
 
 #-------------------------------------------------------------
 
@@ -119,7 +137,7 @@ class DownloadPerformer:
 
     def __init__(self, *args, **kwargs):
         self.music_id_getter = MusicIDGetter()
-        self.music_id_getter.url_checkers = [KeywordSongChecker(), NeteaseCloudMusicLinkChecker()]
+        self.music_id_getter.url_checkers = [KeywordSongChecker(), NetEaseMusicLinkChecker()]
 
         self.outlink_url_getter = OutLinkUrlGetter()
         self.actual_url_getter = ActualUrlGetter()
@@ -159,5 +177,3 @@ class DownloadPerformer:
 download_performer = DownloadPerformer()
 while(True):
     download_performer.Run()
-
-
