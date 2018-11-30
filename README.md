@@ -1,4 +1,4 @@
-# Just a practice as a beginner of Python.
+# Just some practices as a beginner on Python.
 
 Instruction:
 Decoder:
